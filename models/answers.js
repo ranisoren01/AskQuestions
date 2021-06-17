@@ -1,15 +1,16 @@
 const mongoose = require("mongoose");
-const { schema } = require("./question");
 const Schema = mongoose.Schema;
 
-const Answer = new Schema({
-  Answer: {
+const AnswerSchema = new Schema({
+  answer: {
     type: String,
-    required: True,
+    required: true,
   },
   question: {
     type: Schema.Types.ObjectId,
+    ref: "Question",
     required: true,
-    ref: Question,
   },
 });
+
+module.exports = mongoose.model("Answer", AnswerSchema);

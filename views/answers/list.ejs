@@ -1,0 +1,25 @@
+<% layout('layouts/boilerplate') %>
+<h1>All answers</h1>
+<h5>Question: <%= values.question %>
+</h5>
+<% if(values.answers.length==0) {%>
+<p>No answers have been added yet</p>
+<% }else{ %>
+<% for(ans of values.answers){ %>
+<div class="card">
+    <div class="card-body">
+        <div class="card-text">
+            <%= ans.answer %>
+        </div>
+        <div class="card-link">
+            <form action="/questions/<%= ans._id %>/ans/<%= ans._id %>/edit">
+                <button class="btn btn-primary btn-sm">Edit</button>
+            </form>
+            <form action="/questions/<%= ans._id %>/ans/<%= ans._id %>/delete?_method=delete" method="POST">
+                <button class="btn btn-danger btn-sm">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+<% } %>
+<% } %>
