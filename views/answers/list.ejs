@@ -12,10 +12,10 @@
             <%= ans.answer %>
         </div>
         <div class="card-link">
-            <form action="/questions/<%= ans._id %>/ans/<%= ans._id %>/edit">
+            <form action="/questions/<%= values._id %>/answers/<%= ans._id %>/edit">
                 <button class="btn btn-primary btn-sm">Edit</button>
             </form>
-            <form action="/questions/<%= ans._id %>/ans/<%= ans._id %>/delete?_method=delete" method="POST">
+            <form action="/questions/<%= values._id %>/answers/<%= ans._id %>?_method=delete" method="POST">
                 <button class="btn btn-danger btn-sm">Delete</button>
             </form>
         </div>

@@ -1,0 +1,9 @@
+<% layout('layouts/boilerplate') %>
+<h6><%= ans.question.question %></h6>
+<form action="/questions/<%= ans.question._id %>/answers/<%= ans._id %>?_method=PUT" method="POST">
+    <label for="answer">answer : </label>
+    <br>
+    <textarea name="answer" id="answer"><%= ans.answer %></textarea>
+    <br>
+    <button>Submit</button>
+</form>

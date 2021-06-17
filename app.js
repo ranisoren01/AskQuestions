@@ -77,9 +77,30 @@ app.post("/questions/:id/answers", async (req, res) => {
   await ques.save();
   console.log("aaa");
   console.log(ques);
-  res.send(ques.populate("answers"));
-  // console.log(ques);
-  // res.send(ques.populate("answers"));
+  res.redirect(`/questions/${req.params.id}/answers`);
+});
+
+app.delete("/questions/:id/answers/:a_id", async (req, res) => {
+  const { id, a_id } = req.params;
+  await Question.findByIdAndUpdate(id, {
+    $pull: {
+      answers: a_id,
+    },
+  });
+  await Answer.findByIdAndDelete(a_id);
+  res.redirect(`/questions/${id}/answers`);
+});
+
+app.put("/questions/:id/answers/:a_id", async (req, res) => {
+  const { id, a_id } = req.params;
+  const ans = await Answer.findByIdAndUpdate(req.params.a_id, req.body);
+  // res.send(req.body);
+  res.redirect(`/questions/${id}/answers`);
+});
+
+app.get("/questions/:id/answers/:a_id/edit", async (req, res) => {
+  const ans = await Answer.findById(req.params.a_id).populate("question");
+  res.render("answers/edit", { ans });
 });
 
 app.listen(3000, () => {
