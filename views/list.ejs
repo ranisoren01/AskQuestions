@@ -1,0 +1,20 @@
+<% layout('layouts/boilerplate') %>
+<h1>All questions</h1>
+
+<% for(q of ques){ %>
+<div class="card">
+    <div class="card-body">
+        <div class="card-text">
+            <%= q.question %>
+        </div>
+        <div class="card-link">
+            <form action="/questions/<%= q._id %>/edit">
+                <button class="btn btn-primary btn-sm">Edit</button>
+            </form>
+            <form action="/questions/<%= q.id %>/delete?_method=delete" method="POST">
+                <button class="btn btn-danger btn-sm">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+<% } %>
