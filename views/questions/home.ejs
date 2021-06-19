@@ -1,8 +1,12 @@
 <% layout('layouts/boilerplate') -%>
 <form action="/questions" method="POST">
-    <label for="question">Question : </label>
+    <label for="title">Question Title</label>
     <br>
-    <textarea name="question" id="question"></textarea>
+    <textarea name="title" id="title"></textarea>
+    <br>
+    <label for="description">Description</label>
+    <br>
+    <textarea name="description" id="description"></textarea>
     <br>
     <button>Submit</button>
 </form>
