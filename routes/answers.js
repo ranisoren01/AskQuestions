@@ -18,6 +18,10 @@ router.get(
   "/",
   catchAsync(async (req, res) => {
     const values = await Question.findById(req.params.id).populate("answers");
+    if (!values) {
+      req.flash("error", "Question not found");
+      res.redirect("/questions");
+    }
     res.render("answers/list", { values });
   })
 );
@@ -26,6 +30,10 @@ router.get(
   "/new",
   catchAsync(async (req, res) => {
     const ques = await Question.findById(req.params.id);
+    if (!ques) {
+      req.flash("error", "Question not found");
+      res.redirect("/questions");
+    }
     res.render("answers/new", { ques });
   })
 );
@@ -40,7 +48,7 @@ router.post(
       question: ques._id,
       answer: req.body.answer,
     });
-    console.log(ans);
+    // console.log(ans);
     ques.answers.push(ans._id);
     await ans.save();
     await ques.save();
