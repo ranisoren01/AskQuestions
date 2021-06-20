@@ -5,14 +5,18 @@ const path = require("path");
 const ejsMate = require("ejs-mate");
 const Question = require("./models/question");
 const Answer = require("./models/answers");
+const User = require("./models/users");
 const methodOverride = require("method-override");
 const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
 const { questionSchema, answerSchema } = require("./schemas");
 const QuestionRoutes = require("./routes/questions");
 const answerRoutes = require("./routes/answers");
+const userRoutes = require("./routes/users");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
 
 mongoose.connect("mongodb://localhost:27017/project", {
   useNewUrlParser: true,
@@ -45,6 +49,12 @@ app.use(
   })
 );
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 const validate = (schema) => {
   return (req, res, next) => {
@@ -85,6 +95,8 @@ app.get("/", (req, res) => {
 app.use("/questions", QuestionRoutes);
 ///answer routes
 app.use("/questions/:id/answers", answerRoutes);
+//user routes
+app.use("/users", userRoutes);
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page Not Found", 404));
 });
