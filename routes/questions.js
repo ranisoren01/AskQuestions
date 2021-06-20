@@ -22,21 +22,15 @@ router.get(
     res.render("questions/list", { questions });
   })
 );
-router.post(
-  "/",
-  isLoggedIn,
-  validateQuestion,
-  isQuestionAuthor,
-  async (req, res) => {
-    const ques = new Question(req.body);
-    ques.author = req.user;
-    //console.log(req.body.question);
-    await ques.save();
-    console.log(ques);
-    req.flash("success", "Question has been posted successfully");
-    res.redirect("/questions");
-  }
-);
+router.post("/", isLoggedIn, validateQuestion, async (req, res) => {
+  const ques = new Question(req.body);
+  ques.author = req.user;
+  //console.log(req.body.question);
+  await ques.save();
+  console.log(ques);
+  req.flash("success", "Question has been posted successfully");
+  res.redirect("/questions");
+});
 router.get(
   "/:id/edit",
   isLoggedIn,

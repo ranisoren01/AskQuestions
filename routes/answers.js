@@ -39,7 +39,6 @@ router.get(
 
 router.post(
   "/",
-  validateAnswer,
   isLoggedIn,
   catchAsync(async (req, res) => {
     const ques = await Question.findById(req.params.id);
