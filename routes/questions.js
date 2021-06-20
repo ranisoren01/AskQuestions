@@ -24,12 +24,14 @@ router.post("/", validateQuestion, async (req, res) => {
   const ques = new Question(req.body);
   //console.log(req.body.question);
   await ques.save();
+  req.flash("success", "Question has been posted successfully");
   res.redirect("/questions");
 });
 router.get(
   "/:id/edit",
   catchAsync(async (req, res) => {
     const ques = await Question.findById(req.params.id);
+    if (!ques) req.flash("error", "Question not found");
     res.render("questions/edit", { ques });
   })
 );
@@ -39,6 +41,7 @@ router.put(
   catchAsync(async (req, res) => {
     // console.log(req.body);
     const ques = await Question.findByIdAndUpdate(req.params.id, req.body);
+    req.flash("success", "Modified the question successfully");
     res.redirect("/questions");
   })
 );
@@ -47,6 +50,7 @@ router.delete(
   "/:id/delete",
   catchAsync(async (req, res) => {
     await Question.findByIdAndDelete(req.params.id);
+    req.flash("success", "Question has been deleted successfully");
     res.redirect("/questions");
   })
 );

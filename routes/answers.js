@@ -35,6 +35,7 @@ router.post(
   validateAnswer,
   catchAsync(async (req, res) => {
     const ques = await Question.findById(req.params.id);
+    if (!ques) req.flash("error", "Question not found");
     const ans = new Answer({
       question: ques._id,
       answer: req.body.answer,
@@ -43,8 +44,8 @@ router.post(
     ques.answers.push(ans._id);
     await ans.save();
     await ques.save();
-    console.log("aaa");
-    console.log(ques);
+    // console.log(ques);
+    req.flash("success", "Asnwer saved successfully");
     res.redirect(`/questions/${req.params.id}/answers`);
   })
 );
@@ -59,6 +60,7 @@ router.delete(
       },
     });
     await Answer.findByIdAndDelete(a_id);
+    req.flash("success", "Deleted the answer successfully");
     res.redirect(`/questions/${id}/answers`);
   })
 );
@@ -68,6 +70,7 @@ router.put(
   catchAsync(async (req, res) => {
     const { id, a_id } = req.params;
     const ans = await Answer.findByIdAndUpdate(req.params.a_id, req.body);
+    req.flash("success", "Modified answer successfully");
     // res.send(req.body);
     res.redirect(`/questions/${id}/answers`);
   })
@@ -75,9 +78,12 @@ router.put(
 
 router.get(
   "/:a_id/edit",
-  validateAnswer,
   catchAsync(async (req, res) => {
     const ans = await Answer.findById(req.params.a_id).populate("question");
+    if (!ans) {
+      req.flash("error", "Answer not found");
+      return res.redirect(`/questions/${req.params.id}/answers`);
+    }
     res.render("answers/edit", { ans });
   })
 );

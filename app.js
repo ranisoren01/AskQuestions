@@ -11,6 +11,8 @@ const ExpressError = require("./utils/ExpressError");
 const { questionSchema, answerSchema } = require("./schemas");
 const QuestionRoutes = require("./routes/questions");
 const answerRoutes = require("./routes/answers");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 mongoose.connect("mongodb://localhost:27017/project", {
   useNewUrlParser: true,
@@ -29,6 +31,20 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  session({
+    secret: "...",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      // secure: true,
+      httpOnly: true,
+      expires: Date.now() + 1000 * 24 * 60 * 60,
+    },
+  })
+);
+app.use(flash());
 
 const validate = (schema) => {
   return (req, res, next) => {
@@ -54,6 +70,13 @@ const validateAnswer = (req, res, next) => {
     throw new ExpressError(msg, 400);
   } else next();
 };
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
+
 app.get("/", (req, res) => {
   //res.send('home');
   res.render("questions/home");
