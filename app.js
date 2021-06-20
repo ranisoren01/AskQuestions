@@ -17,6 +17,11 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const {
+  validateAnswer,
+  validateQuestion,
+  isLoggedIn,
+} = require("./middleware");
 
 mongoose.connect("mongodb://localhost:27017/project", {
   useNewUrlParser: true,
@@ -56,40 +61,10 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const validate = (schema) => {
-  return (req, res, next) => {
-    const { error } = schema.validate(req.body);
-    if (error) {
-      const msg = error.details.map((e) => e.message).join(",");
-      console.log("message = ", msg);
-      throw new ExpressError(msg, 400);
-    } else next();
-  };
-};
-const validateQuestion = (req, res, next) => {
-  const { error } = questionSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((e) => e.message).join(",");
-    throw new ExpressError(msg, 400);
-  } else next();
-};
-const validateAnswer = (req, res, next) => {
-  const { error } = answerSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((e) => e.message).join(",");
-    throw new ExpressError(msg, 400);
-  } else next();
-};
-
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
-});
-
-app.get("/", (req, res) => {
-  //res.send('home');
-  res.render("questions/home");
 });
 //questions routes...
 app.use("/questions", QuestionRoutes);

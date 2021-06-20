@@ -5,14 +5,11 @@ const ExpressError = require("../utils/ExpressError");
 const { questionSchema, answerSchema } = require("../schemas");
 const Question = require("../models/question");
 const Answer = require("../models/answers");
-
-const validateAnswer = (req, res, next) => {
-  const { error } = answerSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((e) => e.message).join(",");
-    throw new ExpressError(msg, 400);
-  } else next();
-};
+const {
+  validateAnswer,
+  validateQuestion,
+  isLoggedIn,
+} = require("../middleware");
 
 router.get(
   "/",
@@ -28,6 +25,7 @@ router.get(
 
 router.get(
   "/new",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const ques = await Question.findById(req.params.id);
     if (!ques) {
@@ -41,6 +39,7 @@ router.get(
 router.post(
   "/",
   validateAnswer,
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const ques = await Question.findById(req.params.id);
     if (!ques) req.flash("error", "Question not found");
@@ -60,6 +59,7 @@ router.post(
 
 router.delete(
   "/:a_id",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const { id, a_id } = req.params;
     await Question.findByIdAndUpdate(id, {
@@ -75,6 +75,7 @@ router.delete(
 
 router.put(
   "/:a_id",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const { id, a_id } = req.params;
     const ans = await Answer.findByIdAndUpdate(req.params.a_id, req.body);
@@ -86,6 +87,7 @@ router.put(
 
 router.get(
   "/:a_id/edit",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const ans = await Answer.findById(req.params.a_id).populate("question");
     if (!ans) {

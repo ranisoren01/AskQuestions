@@ -5,15 +5,15 @@ const Answer = require("../models/answers");
 const catchAsync = require("../utils/catchAsync");
 const ExpressError = require("../utils/ExpressError");
 const { questionSchema, answerSchema } = require("../schemas");
+const {
+  validateAnswer,
+  validateQuestion,
+  isLoggedIn,
+} = require("../middleware");
 
-const validateQuestion = (req, res, next) => {
-  const { error } = questionSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((e) => e.message).join(",");
-    throw new ExpressError(msg, 400);
-  } else next();
-};
-
+router.get("/new", isLoggedIn, (req, res) => {
+  res.render("questions/home");
+});
 router.get(
   "/",
   catchAsync(async (req, res) => {
@@ -21,7 +21,7 @@ router.get(
     res.render("questions/list", { questions });
   })
 );
-router.post("/", validateQuestion, async (req, res) => {
+router.post("/", isLoggedIn, validateQuestion, async (req, res) => {
   const ques = new Question(req.body);
   //console.log(req.body.question);
   await ques.save();
@@ -30,6 +30,7 @@ router.post("/", validateQuestion, async (req, res) => {
 });
 router.get(
   "/:id/edit",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const ques = await Question.findById(req.params.id);
     if (!ques) {
@@ -41,6 +42,7 @@ router.get(
 );
 router.put(
   "/:id/edit",
+  isLoggedIn,
   validateQuestion,
   catchAsync(async (req, res) => {
     // console.log(req.body);
@@ -56,6 +58,7 @@ router.put(
 
 router.delete(
   "/:id/delete",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const ques = await Question.findById(req.params.id).populate("answers");
     if (!ques) {
