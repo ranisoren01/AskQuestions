@@ -9,6 +9,7 @@ const {
   validateAnswer,
   validateQuestion,
   isLoggedIn,
+  isAnswerAuthor,
 } = require("../middleware");
 
 router.get(
@@ -46,6 +47,7 @@ router.post(
     const ans = new Answer({
       question: ques._id,
       answer: req.body.answer,
+      author: req.user,
     });
     // console.log(ans);
     ques.answers.push(ans._id);
@@ -60,6 +62,7 @@ router.post(
 router.delete(
   "/:a_id",
   isLoggedIn,
+  isAnswerAuthor,
   catchAsync(async (req, res) => {
     const { id, a_id } = req.params;
     await Question.findByIdAndUpdate(id, {
@@ -76,6 +79,7 @@ router.delete(
 router.put(
   "/:a_id",
   isLoggedIn,
+  isAnswerAuthor,
   catchAsync(async (req, res) => {
     const { id, a_id } = req.params;
     const ans = await Answer.findByIdAndUpdate(req.params.a_id, req.body);
@@ -88,6 +92,7 @@ router.put(
 router.get(
   "/:a_id/edit",
   isLoggedIn,
+  isAnswerAuthor,
   catchAsync(async (req, res) => {
     const ans = await Answer.findById(req.params.a_id).populate("question");
     if (!ans) {

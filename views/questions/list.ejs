@@ -9,12 +9,12 @@
             <%= question.description %>
         </div>
         <div class="card-link">
+            <% if(user && user._id.equals(question.author)){ %>
             <a href="/questions/<%= question._id %>/edit" class="btn btn-primary btn-sm">Edit</a>
-
             <form action="/questions/<%= question.id %>/delete?_method=delete" method="POST">
                 <button class="btn btn-danger btn-sm">Delete</button>
             </form>
-
+            <% } %>
             <a href="/questions/<%= question._id %>/answers" class="btn btn-success btn-sm">Answers</a>
 
             <a href="/questions/<%= question._id %>/answers/new" class="btn btn-info btn-sm">Answer the question</a>

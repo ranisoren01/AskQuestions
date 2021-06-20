@@ -12,12 +12,14 @@
             <%= ans.answer %>
         </div>
         <div class="card-link">
+            <% if(user && user._id.equals(ans.author)){ %>
             <form action="/questions/<%= values._id %>/answers/<%= ans._id %>/edit">
                 <button class="btn btn-primary btn-sm">Edit</button>
             </form>
             <form action="/questions/<%= values._id %>/answers/<%= ans._id %>?_method=delete" method="POST">
                 <button class="btn btn-danger btn-sm">Delete</button>
             </form>
+            <% } %>
         </div>
     </div>
 </div>

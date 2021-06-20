@@ -8,7 +8,7 @@ const QuestionSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   answers: [
     {
@@ -16,6 +16,11 @@ const QuestionSchema = new mongoose.Schema({
       ref: "Answer",
     },
   ],
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Question", QuestionSchema);

@@ -11,6 +11,11 @@ const AnswerSchema = new Schema({
     ref: "Question",
     required: true,
   },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Answer", AnswerSchema);

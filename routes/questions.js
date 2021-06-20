@@ -9,6 +9,7 @@ const {
   validateAnswer,
   validateQuestion,
   isLoggedIn,
+  isQuestionAuthor,
 } = require("../middleware");
 
 router.get("/new", isLoggedIn, (req, res) => {
@@ -21,16 +22,25 @@ router.get(
     res.render("questions/list", { questions });
   })
 );
-router.post("/", isLoggedIn, validateQuestion, async (req, res) => {
-  const ques = new Question(req.body);
-  //console.log(req.body.question);
-  await ques.save();
-  req.flash("success", "Question has been posted successfully");
-  res.redirect("/questions");
-});
+router.post(
+  "/",
+  isLoggedIn,
+  validateQuestion,
+  isQuestionAuthor,
+  async (req, res) => {
+    const ques = new Question(req.body);
+    ques.author = req.user;
+    //console.log(req.body.question);
+    await ques.save();
+    console.log(ques);
+    req.flash("success", "Question has been posted successfully");
+    res.redirect("/questions");
+  }
+);
 router.get(
   "/:id/edit",
   isLoggedIn,
+  isQuestionAuthor,
   catchAsync(async (req, res) => {
     const ques = await Question.findById(req.params.id);
     if (!ques) {
@@ -43,6 +53,7 @@ router.get(
 router.put(
   "/:id/edit",
   isLoggedIn,
+  isQuestionAuthor,
   validateQuestion,
   catchAsync(async (req, res) => {
     // console.log(req.body);
@@ -59,6 +70,7 @@ router.put(
 router.delete(
   "/:id/delete",
   isLoggedIn,
+  isQuestionAuthor,
   catchAsync(async (req, res) => {
     const ques = await Question.findById(req.params.id).populate("answers");
     if (!ques) {
