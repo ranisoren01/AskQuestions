@@ -4,10 +4,14 @@
 <% for(question of questions){ %>
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title"><%= question.title %> </h5>
-        <div class="card-text">
-            <%= question.description %>
-        </div>
+        <form action="/questions/<%= question._id %>/answers" method="GET">
+            <button class="btn">
+                <h5 class="card-title"><%= question.title %> </h5>
+                <div class="card-text">
+                    <%= question.description %>
+                </div>
+            </button>
+        </form>
         <div class="card-link">
             <% if(user && user._id.equals(question.author)){ %>
             <a href="/questions/<%= question._id %>/edit" class="btn btn-primary btn-sm">Edit</a>
@@ -15,8 +19,6 @@
                 <button class="btn btn-danger btn-sm">Delete</button>
             </form>
             <% } %>
-            <a href="/questions/<%= question._id %>/answers" class="btn btn-success btn-sm">Answers</a>
-
             <a href="/questions/<%= question._id %>/answers/new" class="btn btn-info btn-sm">Answer the question</a>
         </div>
     </div>

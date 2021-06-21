@@ -1,27 +1,58 @@
 <% layout('layouts/boilerplate') %>
-<h1>All answers</h1>
-<h5>Question: <%= values.question %>
-</h5>
-<% if(values.answers.length==0) {%>
-<p>No answers have been added yet</p>
-<% }else{ %>
-<% for(ans of values.answers){ %>
 <div class="card">
     <div class="card-body">
+        <small class="text-muted">Question</small>
+        <h5 class="card-title"><%= values.title%></h5>
         <div class="card-text">
-            <%= ans.answer %>
+            <%= values.description %>
         </div>
-        <div class="card-link">
-            <% if(user && user._id.equals(ans.author)){ %>
-            <form action="/questions/<%= values._id %>/answers/<%= ans._id %>/edit">
-                <button class="btn btn-primary btn-sm">Edit</button>
-            </form>
-            <form action="/questions/<%= values._id %>/answers/<%= ans._id %>?_method=delete" method="POST">
-                <button class="btn btn-danger btn-sm">Delete</button>
-            </form>
-            <% } %>
+        <div class="card-text">
+        </h5>
+        <% if(values.answers.length==0) {%>
+        <p>No answers have been added yet</p>
+        <% }else{ %>
+            <small class="text-muted">Answers</small>
+            <% for(ans of values.answers){ %>
+                <div class="card">
+                    <div class="card-body row">
+                        <div class="card-text col-9">
+                            <%= ans.answer %>
+                        </div>
+                        <div class="card-link col">
+                            <% if(user && user._id.equals(ans.author)){ %>
+                                <div class="row">
+                                <form action="/questions/<%= values._id %>/answers/<%= ans._id %>/edit" class="col ms-5">
+                                    <button class="btn btn-sm">Edit</button>
+                                </form>
+                                <form action="/questions/<%= values._id %>/answers/<%= ans._id %>?_method=delete" method="POST"class="col ms-5">
+                                    <button class="btn btn-sm">Delete</button>
+                                </form>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+        <% } %>
+        <% } %>
+
         </div>
+        <div class="card card-body">
+            <p>
+                <a class="btn btn-sm" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                Write your answer...
+                </a>
+              </p>
+              <div class="collapse" id="collapseExample">
+                    <form action="/questions/<%= values._id %>/answers" method="POST" class="validate-form" novalidate>
+                        <div class="mb-3">
+                            <textarea name="answer" class="form-control" required></textarea>
+                          </div>
+                          <button type="submit" class="btn btn-sm">Submit</button>
+                    </form>
+              </div>
+        </div>
+
     </div>
 </div>
-<% } %>
-<% } %>
+<script src="ans.js"></script>
+
