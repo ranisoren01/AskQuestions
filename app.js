@@ -67,6 +67,8 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
+
+app.get("/", (req, res) => res.render("home"));
 //questions routes...
 app.use("/questions", QuestionRoutes);
 ///answer routes
@@ -79,6 +81,7 @@ app.all("*", (req, res, next) => {
 
 app.use((err, req, res, next) => {
   console.log("inside error handling middleware!!!!!!!\n");
+  console.log(err);
   if (!err.message) err.message = "Something went wrong";
   if (!err.statusCode) err.statusCode = 500;
   //console.log(err.statusCode);

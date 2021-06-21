@@ -98,7 +98,7 @@ router.get(
       req.flash("error", "Answer not found");
       return res.redirect(`/questions/${req.params.id}/answers`);
     }
-    res.render("answers/edit", { ans });
+    return res.render("answers/edit", { ans });
   })
 );
 
