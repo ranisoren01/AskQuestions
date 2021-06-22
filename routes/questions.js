@@ -27,11 +27,12 @@ router.post("/", isLoggedIn, validateQuestion, async (req, res) => {
     title: req.body.title,
     description: req.body.description,
     upvotes: 0,
+    votes: [],
   });
   ques.author = req.user;
   //console.log(req.body.question);
   await ques.save();
-  console.log(ques);
+  // console.log(ques);
   req.flash("success", "Question has been posted successfully");
   res.redirect("/questions");
 });
@@ -79,7 +80,7 @@ router.delete(
       res.redirect("/questions");
     }
     for (q of ques.answers) {
-      console.log(q._id);
+      // console.log(q._id);
       await Answer.findByIdAndDelete(q._id);
     }
     await Question.findByIdAndDelete(req.params.id);

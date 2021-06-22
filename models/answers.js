@@ -16,9 +16,16 @@ const AnswerSchema = new Schema({
     ref: "User",
     required: true,
   },
-  upvotes: {
-    type: Number,
-  },
+  votes: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        // ref: "User",
+      },
+      value: Number,
+    },
+  ],
+  upvotes: Number,
 });
 
 module.exports = mongoose.model("Answer", AnswerSchema);

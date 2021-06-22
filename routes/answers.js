@@ -19,7 +19,7 @@ router.get(
       path: "answers",
       options: { sort: { upvotes: -1 } },
     });
-    console.log(values);
+    // console.log(values);
     if (!values) {
       req.flash("error", "Question not found");
       res.redirect("/questions");
@@ -52,6 +52,7 @@ router.post(
       answer: req.body.answer,
       author: req.user,
       upvotes: 0,
+      votes: [],
     });
     // console.log(ans);
     ques.answers.push(ans._id);
