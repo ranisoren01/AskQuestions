@@ -13,6 +13,7 @@ const { questionSchema, answerSchema } = require("./schemas");
 const QuestionRoutes = require("./routes/questions");
 const answerRoutes = require("./routes/answers");
 const userRoutes = require("./routes/users");
+const upvotesRoutes = require("./routes/upvoting");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
@@ -74,6 +75,7 @@ app.use("/questions", QuestionRoutes);
 ///answer routes
 app.use("/questions/:id/answers", answerRoutes);
 //user routes
+app.use("/upvote/questions/:id", upvotesRoutes);
 app.use("/users", userRoutes);
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page Not Found", 404));

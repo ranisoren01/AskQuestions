@@ -21,6 +21,9 @@ const QuestionSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  upvotes: {
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("Question", QuestionSchema);

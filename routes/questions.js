@@ -18,12 +18,16 @@ router.get("/new", isLoggedIn, (req, res) => {
 router.get(
   "/",
   catchAsync(async (req, res) => {
-    const questions = await Question.find();
+    const questions = await Question.find().sort({ upvotes: -1 });
     res.render("questions/list", { questions });
   })
 );
 router.post("/", isLoggedIn, validateQuestion, async (req, res) => {
-  const ques = new Question(req.body);
+  const ques = new Question({
+    title: req.body.title,
+    description: req.body.description,
+    upvotes: 0,
+  });
   ques.author = req.user;
   //console.log(req.body.question);
   await ques.save();
@@ -51,7 +55,10 @@ router.put(
   validateQuestion,
   catchAsync(async (req, res) => {
     // console.log(req.body);
-    const ques = await Question.findByIdAndUpdate(req.params.id, req.body);
+    const ques = await Question.findByIdAndUpdate(req.params.id, {
+      title: req.body.title,
+      description: req.body.description,
+    });
     if (!ques) {
       req.flash("error", "Question not found");
       res.redirect("/questions");

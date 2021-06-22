@@ -15,7 +15,11 @@ const {
 router.get(
   "/",
   catchAsync(async (req, res) => {
-    const values = await Question.findById(req.params.id).populate("answers");
+    const values = await Question.findById(req.params.id).populate({
+      path: "answers",
+      options: { sort: { upvotes: -1 } },
+    });
+    console.log(values);
     if (!values) {
       req.flash("error", "Question not found");
       res.redirect("/questions");
@@ -47,6 +51,7 @@ router.post(
       question: ques._id,
       answer: req.body.answer,
       author: req.user,
+      upvotes: 0,
     });
     // console.log(ans);
     ques.answers.push(ans._id);
@@ -81,7 +86,9 @@ router.put(
   isAnswerAuthor,
   catchAsync(async (req, res) => {
     const { id, a_id } = req.params;
-    const ans = await Answer.findByIdAndUpdate(req.params.a_id, req.body);
+    const ans = await Answer.findByIdAndUpdate(req.params.a_id, {
+      answer: req.body.answer,
+    });
     req.flash("success", "Modified answer successfully");
     // res.send(req.body);
     res.redirect(`/questions/${id}/answers`);
