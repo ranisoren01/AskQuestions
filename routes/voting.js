@@ -21,6 +21,12 @@ router.get(
       console.log(vote);
       if (String(vote.user) == req.user._id) {
         check = false;
+        if (vote.value == -1) {
+          ans.upvotes += 2;
+          vote.value = 1;
+          vote.save();
+          ans.save();
+        }
       }
     }
     console.log(ans.votes);
@@ -47,6 +53,12 @@ router.get(
       console.log(vote);
       if (String(vote.user) == req.user._id) {
         check = false;
+        if (vote.value == 1) {
+          ans.upvotes -= 2;
+          vote.value = -1;
+          vote.save();
+          ans.save();
+        }
       }
     }
     console.log(ans.votes);
@@ -73,6 +85,12 @@ router.get(
       console.log(vote);
       if (String(vote.user) == req.user._id) {
         check = false;
+        if (vote.value == -1) {
+          ans.upvotes += 2;
+          vote.value = 1;
+          vote.save();
+          ans.save();
+        }
       }
     }
     console.log(ques.votes);
@@ -99,6 +117,12 @@ router.get(
       console.log(vote);
       if (String(vote.user) == req.user._id) {
         check = false;
+        if (vote.value == 1) {
+          ans.upvotes -= 2;
+          vote.value = -1;
+          vote.save();
+          ans.save();
+        }
       }
     }
     console.log(ques.votes);
