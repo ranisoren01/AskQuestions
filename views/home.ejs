@@ -12,23 +12,8 @@
 </head>
 
 <body>
+    <%- include('./partials/navbar') %>
     <div class="body">
-        <nav>
-            <div class="heading">
-                AskQuestions
-            </div>
-            <div class="links">
-                <a href="/" class="active">Home</a>
-                <a href="/questions">Questions</a>
-                <% if(!user) {%>
-                <a aria-current="page" href="/users/login">Login</a>
-                <a href="/users/register">Register</a>
-                <% }else{ %>
-                <a href="/users/logout">Logout</a>
-                <% } %>
-            </div>
-        </nav>
-
         <main>
             <h3>AskQuestions</h3>
             <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, nostrum facere? Iusto illo corrupti,
