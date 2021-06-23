@@ -16,7 +16,7 @@ router.post(
       const user = new User({ email, username });
       const regUser = await User.register(user, password);
 
-      console.log(regUser);
+      // console.log(regUser);
       req.flash("success", "Successfully registered");
       res.redirect("/questions");
     } catch (e) {

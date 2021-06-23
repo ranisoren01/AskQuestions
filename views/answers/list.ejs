@@ -5,6 +5,26 @@
         <h5 class="card-title"><%= values.title%></h5>
         <div class="card-text">
             <%= values.description %>
+            <div class="card-link col">
+                <div class="row">
+                    <% if(user) {%>
+                    <form action="/questions/<%= values._id %>/upvote" class="col ms-2">
+                        <button class="btn btn-sm">Upvote</button>
+                    </form>
+                    <form action="/questions/<%= values._id %>/downvote" class="col ms-2">
+                        <button class="btn btn-sm">Downvote</button>
+                    </form>
+                    <% } %>
+                    <% if(user && user._id.equals(values.author)){ %>
+                    <form action="/questions/<%= values._id %>/edit" class="col ms-2">
+                        <button class="btn btn-sm">Edit</button>
+                    </form>
+                    <form action="/questions/<%= values._id %>?_method=delete" method="POST" class="col ms-2">
+                        <button class="btn btn-sm">Delete</button>
+                    </form>
+                    <% } %>
+                </div>
+            </div>
         </div>
         <div class="card-text">
             </h5>
@@ -19,23 +39,31 @@
                         <%= ans.answer %>
                     </div>
                     <div class="card-link col">
-                        <% if(user && user._id.equals(ans.author)){ %>
                         <div class="row">
-                            <form action="/questions/<%= values._id %>/answers/<%= ans._id %>/edit" class="col ms-5">
+                            <% if(user) {%>
+                            <form action="/questions/<%= values._id %>/answers/<%= ans._id %>/upvote" class="col ms-2">
+                                <button class="btn btn-sm">Upvote</button>
+                            </form>
+                            <form action="/questions/<%= values._id %>/answers/<%= ans._id %>/downvote"
+                                class="col ms-2">
+                                <button class="btn btn-sm">Downvote</button>
+                            </form>
+                            <% } %>
+                            <% if(user && user._id.equals(ans.author)){ %>
+                            <form action="/questions/<%= values._id %>/answers/<%= ans._id %>/edit" class="col ms-2">
                                 <button class="btn btn-sm">Edit</button>
                             </form>
                             <form action="/questions/<%= values._id %>/answers/<%= ans._id %>?_method=delete"
-                                method="POST" class="col ms-5">
+                                method="POST" class="col ms-2">
                                 <button class="btn btn-sm">Delete</button>
                             </form>
+                            <% } %>
                         </div>
-                        <% } %>
                     </div>
                 </div>
             </div>
             <% } %>
             <% } %>
-
         </div>
         <div class="card card-body">
             <p>

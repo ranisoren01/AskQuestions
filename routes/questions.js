@@ -18,16 +18,21 @@ router.get("/new", isLoggedIn, (req, res) => {
 router.get(
   "/",
   catchAsync(async (req, res) => {
-    const questions = await Question.find();
+    const questions = await Question.find().sort({ upvotes: -1 });
     res.render("questions/list", { questions });
   })
 );
 router.post("/", isLoggedIn, validateQuestion, async (req, res) => {
-  const ques = new Question(req.body);
+  const ques = new Question({
+    title: req.body.title,
+    description: req.body.description,
+    upvotes: 0,
+    votes: [],
+  });
   ques.author = req.user;
   //console.log(req.body.question);
   await ques.save();
-  console.log(ques);
+  // console.log(ques);
   req.flash("success", "Question has been posted successfully");
   res.redirect("/questions");
 });
@@ -51,7 +56,10 @@ router.put(
   validateQuestion,
   catchAsync(async (req, res) => {
     // console.log(req.body);
-    const ques = await Question.findByIdAndUpdate(req.params.id, req.body);
+    const ques = await Question.findByIdAndUpdate(req.params.id, {
+      title: req.body.title,
+      description: req.body.description,
+    });
     if (!ques) {
       req.flash("error", "Question not found");
       res.redirect("/questions");
@@ -72,7 +80,7 @@ router.delete(
       res.redirect("/questions");
     }
     for (q of ques.answers) {
-      console.log(q._id);
+      // console.log(q._id);
       await Answer.findByIdAndDelete(q._id);
     }
     await Question.findByIdAndDelete(req.params.id);
