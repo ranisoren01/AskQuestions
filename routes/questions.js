@@ -41,16 +41,19 @@ router.get(
   isLoggedIn,
   isQuestionAuthor,
   catchAsync(async (req, res) => {
-    const ques = await Question.findById(req.params.id);
-    if (!ques) {
+    const values = await Question.findById(req.params.id).populate({
+      path: "answers",
+      options: { sort: { upvotes: -1 } },
+    });
+    if (!values) {
       req.flash("error", "Question not found");
       res.redirect("/questions");
     }
-    res.render("questions/edit", { ques });
+    res.render("questions/edit", { values });
   })
 );
 router.put(
-  "/:id/edit",
+  "/:id",
   isLoggedIn,
   isQuestionAuthor,
   validateQuestion,
@@ -70,7 +73,7 @@ router.put(
 );
 
 router.delete(
-  "/:id/delete",
+  "/:id",
   isLoggedIn,
   isQuestionAuthor,
   catchAsync(async (req, res) => {
