@@ -5,18 +5,18 @@
         <div class="row">
             <div class="col-1">
                 <% if(user) {%>
-                    <div class="col">
-                        <div class="row">
-                            <form action="/questions/<%= values._id %>/upvote" class="col ms-2">
-                                <button class="btn btn-sm"><i class="fas fa-angle-up"></i></button>
-                            </form>
-                        </div>
-                        <div class="row">
-                            <form action="/questions/<%= values._id %>/downvote" class="col ms-2">
-                                <button class="btn btn-sm"><i class="fas fa-angle-down"></i></button>
-                            </form>
-                        </div>
+                <div class="col">
+                    <div class="row">
+                        <form action="/questions/<%= values._id %>/upvote" class="col ms-2">
+                            <button class="btn btn-sm"><i class="fas fa-angle-up"></i></button>
+                        </form>
                     </div>
+                    <div class="row">
+                        <form action="/questions/<%= values._id %>/downvote" class="col ms-2">
+                            <button class="btn btn-sm"><i class="fas fa-angle-down"></i></button>
+                        </form>
+                    </div>
+                </div>
                 <% } %>
             </div>
             <div class="col-10">
@@ -28,23 +28,23 @@
             <div class="col-1">
                 <div class="row">
                     <% if(user && user._id.equals(values.author)){ %>
-                        <form action="/questions/<%= values._id %>/edit" class="col ms-2">
-                            <button class="btn btn-sm"><i class="fas fa-edit"></i></button>
-                        </form>
-                        <form action="/questions/<%= values._id %>?_method=delete" method="POST" class="col ms-2">
-                            <button class="btn btn-sm"><i class="fas fa-trash"></i></button>
-                        </form>
-                    
+                    <form action="/questions/<%= values._id %>/edit" class="col ms-2">
+                        <button class="btn btn-sm"><i class="fas fa-edit"></i></button>
+                    </form>
+                    <form action="/questions/<%= values._id %>?_method=delete" method="POST" class="col ms-2">
+                        <button class="btn btn-sm"><i class="fas fa-trash"></i></button>
+                    </form>
+
                     <% } %>
                 </div>
             </div>
         </div>
-        
-        
-            <div class="card-link col">
-                
-            </div>
-        
+
+
+        <div class="card-link col">
+
+        </div>
+
         <div class="card-text">
             </h5>
             <% if(values.answers.length==0) {%>
@@ -58,18 +58,18 @@
                 <div class="card-body row">
                     <div class="col-1">
                         <% if(user) {%>
-                            <div class="col">
-                                <div class="row">
-                                    <form action="/questions/<%= values._id %>/answers/<%= ans._id %>/upvote" class="col">
-                                        <button class="btn btn-sm"><i class="fas fa-angle-up"></i></button>
-                                    </form>
-                                </div>
-                                <div class="row">
-                                    <form action="/questions/<%= values._id %>/answers/<%= ans._id %>/downvote" class="col">
-                                        <button class="btn btn-sm"><i class="fas fa-angle-down"></i></button>
-                                    </form>
-                                </div>
+                        <div class="col">
+                            <div class="row">
+                                <form action="/questions/<%= values._id %>/answers/<%= ans._id %>/upvote" class="col">
+                                    <button class="btn btn-sm"><i class="fas fa-angle-up"></i></button>
+                                </form>
                             </div>
+                            <div class="row">
+                                <form action="/questions/<%= values._id %>/answers/<%= ans._id %>/downvote" class="col">
+                                    <button class="btn btn-sm"><i class="fas fa-angle-down"></i></button>
+                                </form>
+                            </div>
+                        </div>
                         <% } %>
                     </div>
                     <div class="card-text col-10">

@@ -19,7 +19,7 @@ router.get(
     let check = true;
     for (vote of ans.votes) {
       console.log(vote);
-      if (String(vote.user) == req.user._id) {
+      if (vote.user.equals(req.user._id)) {
         check = false;
         if (vote.value == -1) {
           ans.upvotes += 2;
@@ -51,7 +51,8 @@ router.get(
     let check = true;
     for (vote of ans.votes) {
       console.log(vote);
-      if (String(vote.user) == req.user._id) {
+      if (vote.user.equals(req.user._id)) {
+        console.log(vote.user.equals(req.user._id));
         check = false;
         if (vote.value == 1) {
           ans.upvotes -= 2;
@@ -83,7 +84,7 @@ router.get(
     let check = true;
     for (vote of ques.votes) {
       console.log(vote);
-      if (String(vote.user) == req.user._id) {
+      if (vote.user.equals(req.user._id)) {
         check = false;
         if (vote.value == -1) {
           ans.upvotes += 2;
@@ -115,7 +116,7 @@ router.get(
     let check = true;
     for (vote of ques.votes) {
       console.log(vote);
-      if (String(vote.user) == req.user._id) {
+      if (vote.user.equals(req.user._id)) {
         check = false;
         if (vote.value == 1) {
           ans.upvotes -= 2;

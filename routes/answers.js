@@ -29,6 +29,24 @@ router.get(
 );
 
 router.get(
+  "/:a_id/edit",
+  isLoggedIn,
+  isAnswerAuthor,
+  catchAsync(async (req, res) => {
+    const values = await Question.findById(req.params.id).populate({
+      path: "answers",
+      options: { sort: { upvotes: -1 } },
+    });
+    const answer = await Answer.findById(req.params.a_id).populate("question");
+    if (!ans) {
+      req.flash("error", "Answer not found");
+      return res.redirect(`/questions/${req.params.id}/answers`);
+    }
+    return res.render("answers/edit", { answer, values });
+  })
+);
+
+router.get(
   "/new",
   isLoggedIn,
   catchAsync(async (req, res) => {
@@ -93,20 +111,6 @@ router.put(
     req.flash("success", "Modified answer successfully");
     // res.send(req.body);
     res.redirect(`/questions/${id}/answers`);
-  })
-);
-
-router.get(
-  "/:a_id/edit",
-  isLoggedIn,
-  isAnswerAuthor,
-  catchAsync(async (req, res) => {
-    const ans = await Answer.findById(req.params.a_id).populate("question");
-    if (!ans) {
-      req.flash("error", "Answer not found");
-      return res.redirect(`/questions/${req.params.id}/answers`);
-    }
-    return res.render("answers/edit", { ans });
   })
 );
 
