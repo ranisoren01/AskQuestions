@@ -1,3 +1,4 @@
+const { boolean } = require("joi");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
@@ -8,6 +9,10 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
   },
 });
 
