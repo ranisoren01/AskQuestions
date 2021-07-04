@@ -1,4 +1,4 @@
-const { questionSchema, answerSchema } = require("./schemas");
+const { questionSchema, answerSchema, userSchema } = require("./schemas");
 const ExpressError = require("./utils/ExpressError");
 const Question = require("./models/question");
 const Answer = require("./models/answers");
@@ -18,9 +18,21 @@ module.exports.validateAnswer = (req, res, next) => {
   } else next();
 };
 
+module.exports.validateUser = (req, res, next) => {
+  const { error } = userSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((e) => e.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else next();
+};
+
 module.exports.isLoggedIn = (req, res, next) => {
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() && req.user.isVerified) {
     return next();
+  }
+  if (!req.user.isVerified) {
+    req.flash("error", "Please verify for email first.");
+    return res.redirect("/users/login");
   }
   req.flash("error", "Please login to continue");
   res.redirect("/users/login");
